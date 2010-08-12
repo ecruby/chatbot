@@ -1,0 +1,20 @@
+== ChatBot
+
+A community built chat bot, just for fun. Send pull requests!
+
+=== Running it
+
+It runs with straight Ruby. You'll need the Cinch gem, and you'll want to specify the nick and channels you want to use:
+
+  ruby chatbot.rb -s irc.freenode.org -n ChatBot -C ecruby
+  
+C = Channels, comma separated for multiple channels
+n = nickname
+s = server
+
+== Things we can do
+
+* More games
+* Database persistence
+* Record links to Tumblr?
+* Whatever else sounds like fun
