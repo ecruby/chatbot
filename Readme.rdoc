@@ -4,13 +4,17 @@ A community built chat bot, just for fun. Send pull requests!
 
 === Running it
 
-It runs with straight Ruby. You'll need the Cinch gem, and you'll want to specify the nick and channels you want to use:
+It runs with straight Ruby. You'll need the Cinch gem and Ruby 1.9, and you'll want to specify the nick and channel you want to use in a YAML file:
 
-  ruby chatbot.rb -s irc.freenode.org -n ChatBot -C ecruby
+  bot.yaml
+  settings:
+    nick: my_bot
+    channel: ecruby
+
+Then just run it with
+
+  ruby chatbot.rb
   
-C = Channels, comma separated for multiple channels
-n = nickname
-s = server
 
 == Things we can do
 

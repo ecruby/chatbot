@@ -1,21 +1,26 @@
 require 'rubygems'
 require 'cinch'
+require 'yaml'
 
+settings = YAML.load(File.read("bot.yml"))
+$help_messages = ["This is a test"]
 
+require 'plugins/karma'
+require 'plugins/link_catcher'
 
-@irc = Cinch.setup :verbose => true do
-  server "irc.freenode.org"
+@irc  = Cinch::Bot.new do
+  
+  configure do |c|
+    c.server = "irc.freenode.org"
+    c.nick = settings["settings"]["nick"]
+    c.channels = [settings["settings"]["channel"]]
+    c.plugins.plugins = [Karma, LinkCatcher]
+  end
+
+  on :message, /^!help/ do |m|
+    $help_messages.each{|message| m.user.send message }
+  end
+
 end
 
-@help_messages = []
-
-require 'modules/grammar_game'
-
-
-
-@irc.plugin "help" do |m|
-  @irc.privmsg m.nick, "Help"
-  @help_messages.each{|message| @irc.privmsg(m.nick, message)}
-end
-
-@irc.run
+@irc.start
