@@ -6,7 +6,7 @@ A community built chat bot, just for fun. Send pull requests!
 
 It runs with straight Ruby. You'll need the Cinch gem and Ruby 1.9, and you'll want to specify the nick and channel you want to use in a YAML file:
 
-  bot.yaml
+  bot.yml
   settings:
     nick: my_bot
     channel: ecruby
