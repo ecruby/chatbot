@@ -1,12 +1,16 @@
 require 'rubygems'
 require 'cinch'
 require 'yaml'
+begin
+  settings = YAML.load(File.read("bot.yml"))
+rescue
+  puts "create bot.yml and populate it with values. See the readme file!"
+end
 
-settings = YAML.load(File.read("bot.yml"))
 $help_messages = ["This is a test"]
 
-require 'plugins/karma'
-require 'plugins/link_catcher'
+require './plugins/karma'
+require './plugins/link_catcher'
 
 @irc  = Cinch::Bot.new do
   
