@@ -19,7 +19,8 @@ require './plugins/blackjack'
     c.server = "irc.freenode.org"
     c.nick = settings["settings"]["nick"]
     c.channels = [settings["settings"]["channel"]]
-    c.plugins.plugins = [Karma, LinkCatcher, Blackjack]
+    # c.plugins.plugins = [Karma, LinkCatcher, Blackjack]
+    c.plugins.plugins = [Blackjack]
   end
 
   on :message, /^!help/ do |m|

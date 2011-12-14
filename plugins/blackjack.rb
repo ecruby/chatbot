@@ -34,7 +34,7 @@ class Blackjack
 
     m.reply "I'm about to deal a hand of blackjack. Hit '!dealmein' if you want in."
     sleep 20
-    m.reply "Alrighty, #{@players.join(' ')} #{@players[1] ? "are" : "is"} playing."
+    m.reply "Alrighty, #{@players.join(', ')} #{@players[1] ? "are" : "is"} playing."
     sleep 5
     deal(m)
     c = card
@@ -125,7 +125,7 @@ class Blackjack
   end
 
   def dealmein(m)
-    @players << m.user.nick
+    @players << m.user.nick unless @players.include?(m.user.nick)
   end
 
   def deal(m)
