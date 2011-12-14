@@ -11,6 +11,7 @@ $help_messages = ["This is a test"]
 
 require './plugins/karma'
 require './plugins/link_catcher'
+require './plugins/blackjack'
 
 @irc  = Cinch::Bot.new do
   
@@ -18,7 +19,7 @@ require './plugins/link_catcher'
     c.server = "irc.freenode.org"
     c.nick = settings["settings"]["nick"]
     c.channels = [settings["settings"]["channel"]]
-    c.plugins.plugins = [Karma, LinkCatcher]
+    c.plugins.plugins = [Karma, LinkCatcher, Blackjack]
   end
 
   on :message, /^!help/ do |m|
