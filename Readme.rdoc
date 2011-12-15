@@ -11,6 +11,16 @@ It runs with straight Ruby. You'll need the Cinch gem and Ruby 1.9, and you'll w
     nick: my_bot
     channel: ecruby
 
+If you plan to use the Karma plugin, you'll need a bit more:
+
+  bot.yml
+  settings:
+    nick: my_bot
+    channel: ecruby
+    persistence_url: ecruby.org
+    username: some_user
+    password: sekrit
+
 Then just run it with
 
   ruby chatbot.rb

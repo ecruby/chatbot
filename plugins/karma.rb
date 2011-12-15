@@ -1,9 +1,14 @@
+require 'open-uri'
+require 'net/http'
+require 'json'
+require 'uri'
+
 class Karma
   include Cinch::Plugin
   
   def initialize(*args)
      super
-     @karma_points = {}
+     @karma_points = JSON.parse open("http://#{$settings['settings']['persistence_url']}/scoreboard").read
    end
   
   $help_messages << "!props <nick>    Give props"
@@ -77,29 +82,33 @@ class Karma
   end
 
   def scoreboard(m)
-    @karma_points.each do |key, val|
-      m.reply points_for(key)
+    @karma_points.each do |j|
+      m.reply points_for(j['nick'])
     end
   end
   
   # ****************************
+  def record_for(nick)
+    @karma_points.select{|j|j['nick']==nick}[0] || (@karma_points << {'nick' => nick, 'points' => 0}).last
+  end
+
   def reduce_points(nick, number)
-    default(nick)
-    @karma_points[nick] -= number
+    record_for(nick)['points'] -= number
+    post_points(nick)
   end
 
   def add_points(nick, number)
-    default(nick)
-    @karma_points[nick] += number
+    record_for(nick)['points'] += number
+    post_points(nick)
   end
 
-  def default(nick)
-    @karma_points[nick] ||= 0
+  def post_points(nick)
+    uri = URI.parse("http://#{$settings['settings']['username']}:#{$settings['settings']['password']}@#{$settings['settings']['persistence_url']}/#{nick}")
+    Net::HTTP.post_form(uri,{'points' => record_for(nick)['points']})
   end
-  
+
   def points_for(nick)
-    default(nick)
-    "#{nick} has #{@karma_points[nick]} points"
+    "#{nick} has #{record_for(nick)['points']} points"
   end
   
 end

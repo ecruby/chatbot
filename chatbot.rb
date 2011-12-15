@@ -2,7 +2,7 @@ require 'rubygems'
 require 'cinch'
 require 'yaml'
 begin
-  settings = YAML.load(File.read("bot.yml"))
+  $settings = YAML.load(File.read("bot.yml"))
 rescue
   puts "create bot.yml and populate it with values. See the readme file!"
 end
@@ -16,8 +16,8 @@ require './plugins/link_catcher'
   
   configure do |c|
     c.server = "irc.freenode.org"
-    c.nick = settings["settings"]["nick"]
-    c.channels = [settings["settings"]["channel"]]
+    c.nick = $settings["settings"]["nick"]
+    c.channels = [$settings["settings"]["channel"]]
     c.plugins.plugins = [Karma, LinkCatcher]
   end
 
