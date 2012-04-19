@@ -4,12 +4,13 @@ A community built chat bot, just for fun. Send pull requests!
 
 === Running it
 
-It runs with straight Ruby. You'll need the Cinch gem and Ruby 1.9, and you'll want to specify the nick and channel you want to use in a YAML file:
+It runs with straight Ruby. You'll need the Cinch and Cinch-Identify gems and Ruby 1.9, and you'll want to specify the nick and channel you want to use in a YAML file:
 
   bot.yml
   settings:
     nick: my_bot
     channel: ecruby
+    nickserv_pass: sekrit
 
 If you plan to use the Karma plugin, you'll need a bit more:
 
@@ -17,6 +18,7 @@ If you plan to use the Karma plugin, you'll need a bit more:
   settings:
     nick: my_bot
     channel: ecruby
+    nickserv_pass: sekrit
     persistence_url: ecruby.org
     username: some_user
     password: sekrit
