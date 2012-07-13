@@ -15,7 +15,8 @@ class Karma
   SMACK_PHRASES = [
     "/me smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
     "/me smacks <nick>...  tsk tsk tsk... -<points> points.",
-    "/me smacks <nick>. You think you can come in here, and talk like that? -<points> points."
+    "/me smacks <nick>. You think you can come in here, and talk like that? -<points> points.",
+    "/me smacks <nick>. You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."
   ]
 
 
@@ -33,7 +34,7 @@ class Karma
   match /element (.+)/, method: :element
 
   $help_messages << "!smack <nick>    Smacks the user"
-  match /smack (.+)/, method: :smack
+  match /smacks? (.+)/, method: :smack
 
   $help_messages << "!grammar <nick>  Grammar violation"
   match /grammar (.+)/, method: :grammar
