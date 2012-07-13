@@ -5,37 +5,37 @@ require 'uri'
 
 class Karma
   include Cinch::Plugin
-  
+
   def initialize(*args)
      super
      @karma_points = JSON.parse open("http://#{$settings['settings']['persistence_url']}/scoreboard").read
    end
-  
+
   $help_messages << "!props <nick>    Give props"
   match /props (.+)/, method: :props
-  
+
   match /people/, method: :people
-  
+
   $help_messages << "!element <nick>  Out of element"
   match /element (.+)/, method: :element
-  
+
   $help_messages << "!grammar <nick>  Grammar violation"
   match /grammar (.+)/, method: :grammar
-  
+
   $help_messages << "!points          shows your score"
   match /points/, method: :points
-  
+
   $help_messages << "!scoreboard      shows all scores"
   match /scoreboard/, method: :scoreboard
-  
+
   def userlist(m)
     m.channel.users.collect{|u| u.first.nick}
   end
-  
+
   def people(m)
     m.reply userlist(m).inspect
   end
-  
+
   def valid_message(m, nick)
     result = false
     if m.channel
@@ -49,10 +49,10 @@ class Karma
     end
     result
   end
-  
+
   def props(m, nick)
     if valid_message(m, nick)
-     
+
       if nick == m.user.nick
         reduce_points(m.user.nick, 50)
         m.reply "#{m.user.nick} loses 50 for patting himself on the back." 
@@ -62,14 +62,14 @@ class Karma
       end
     end
   end
-  
+
   def element(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 20)
       m.reply "#{nick} is out of his or her element. -20 points."
     end
   end
-  
+
   def grammar(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
@@ -86,7 +86,7 @@ class Karma
       m.reply points_for(j['nick'])
     end
   end
-  
+
   # ****************************
   def record_for(nick)
     @karma_points.select{|j|j['nick']==nick}[0] || (@karma_points << {'nick' => nick, 'points' => 0}).last
@@ -112,11 +112,3 @@ class Karma
   end
   
 end
-
-
-
-
-
-
-
-
