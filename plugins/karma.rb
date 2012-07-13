@@ -6,10 +6,23 @@ require 'uri'
 class Karma
   include Cinch::Plugin
 
+  PROPS_PHRASES = [
+    "<nick> is apprently awesome.  +<points> points.",
+    "<nick> earns <points> for Gryffindor!",
+    "YAZOO BITCHES!  <nick> earns 10 points!"
+  ]
+
+  SMACK_PHRASES = [
+    "/me smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
+    "/me smacks <nick>...  tsk tsk tsk... -<points> points.",
+    "/me smacks <nick>. You think you can come in here, and talk like that? -<points> points."
+  ]
+
+
   def initialize(*args)
-     super
-     @karma_points = JSON.parse open("http://#{$settings['settings']['persistence_url']}/scoreboard").read
-   end
+    super
+    @karma_points = JSON.parse open("http://#{$settings['settings']['persistence_url']}/scoreboard").read
+  end
 
   $help_messages << "!props <nick>    Give props"
   match /props (.+)/, method: :props
@@ -61,7 +74,7 @@ class Karma
         m.reply "#{m.user.nick} loses 50 for patting himself on the back." 
       else
           add_points(nick, 10)
-        m.reply "#{nick} is apparently awesome. +10 points."
+        m.reply witty_reply("props", nick, 10)
       end
     end
   end
@@ -76,7 +89,7 @@ class Karma
   def smack(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
-      m.reply "/me smacks #{nick}... tsk tsk tsk.  -10 points."
+      m.reply witty_reply("smack", nick, 10)
     end
   end
 
@@ -98,6 +111,11 @@ class Karma
   end
 
   # ****************************
+  def witty_reply(type, nick, points)
+    phrases = Karma.const_get("#{type.upcase}_PHRASES")
+    phrases[rand(phrases.length)].gsub("<nick>", nick).gsub("<points>", points)
+  end
+
   def record_for(nick)
     @karma_points.select{|j|j['nick']==nick}[0] || (@karma_points << {'nick' => nick, 'points' => 0}).last
   end
