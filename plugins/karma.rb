@@ -74,8 +74,8 @@ class Karma
         reduce_points(m.user.nick, 50)
         m.reply "#{m.user.nick} loses 50 for patting himself on the back." 
       else
-          add_points(nick, 10)
-        m.reply witty_reply("props", nick, 10)
+        add_points(nick, 10)
+        m.reply witty_reply_for "props", :to => nick, :points => 10
       end
     end
   end
@@ -90,7 +90,7 @@ class Karma
   def smack(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
-      m.reply witty_reply("smack", nick, 10)
+      m.reply witty_reply_for "smack", :to => nick, :points => 10
     end
   end
 
@@ -112,9 +112,9 @@ class Karma
   end
 
   # ****************************
-  def witty_reply(type, nick, points)
+  def witty_reply_for(type, options = {})
     phrases = Karma.const_get("#{type.upcase}_PHRASES")
-    phrases[rand(phrases.length)].gsub("<nick>", nick).gsub("<points>", points)
+    phrases[rand(phrases.length)].gsub("<nick>", options[:to]).gsub("<points>", options[:points])
   end
 
   def record_for(nick)
