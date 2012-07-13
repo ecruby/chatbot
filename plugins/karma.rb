@@ -19,13 +19,16 @@ class Karma
   $help_messages << "!element <nick>  Out of element"
   match /element (.+)/, method: :element
 
+  $help_messages << "!smack <nick>    Smacks the user"
+  match /smack (.+)/, method: :smack
+
   $help_messages << "!grammar <nick>  Grammar violation"
   match /grammar (.+)/, method: :grammar
 
-  $help_messages << "!points          shows your score"
+  $help_messages << "!points          Shows your score"
   match /points/, method: :points
 
-  $help_messages << "!scoreboard      shows all scores"
+  $help_messages << "!scoreboard      Shows all scores"
   match /scoreboard/, method: :scoreboard
 
   def userlist(m)
@@ -67,6 +70,13 @@ class Karma
     if valid_message(m, nick)
       reduce_points(nick, 20)
       m.reply "#{nick} is out of his or her element. -20 points."
+    end
+  end
+
+  def smack(m, nick)
+    if valid_message(m, nick)
+      reduce_points(nick, 10)
+      m.reply "/me smacks #{nick}... tsk tsk tsk.  -10 points."
     end
   end
 
