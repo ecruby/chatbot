@@ -114,7 +114,7 @@ class Karma
   # ****************************
   def witty_reply_for(type, options = {})
     phrases = Karma.const_get("#{type.upcase}_PHRASES")
-    phrases[rand(phrases.length)].gsub("<nick>", options[:to]).gsub("<points>", options[:points])
+    phrases[rand(phrases.length)].gsub("<nick>", options[:to].to_s).gsub("<points>", options[:points].to_s)
   end
 
   def record_for(nick)
