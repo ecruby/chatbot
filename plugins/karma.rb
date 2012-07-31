@@ -7,16 +7,16 @@ class Karma
   include Cinch::Plugin
 
   PROPS_PHRASES = [
-    "<nick> is apprently awesome.  +<points> points.",
-    "<nick> earns <points> for Gryffindor!",
-    "YAZOO BITCHES!  <nick> earns 10 points!"
+    [[:send, "<nick> is apprently awesome.  +<points> points."]],
+    [[:send, "<nick> earns <points> for Gryffindor!"]],
+    [[:send, "YAZOO BITCHES!  <nick> earns 10 points!"]]
   ]
 
   SMACK_PHRASES = [
-    "smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
-    "smacks <nick>...  tsk tsk tsk... -<points> points.",
-    "smacks <nick>. You think you can come in here, and talk like that? -<points> points.",
-    "smacks <nick>. You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."
+    [[:action, "smacks <nick>..."], [:send, "you were like a brother to me.... now look at you... -<points> points."]],
+    [[:action, "smacks <nick>..."], [:send, "tsk tsk tsk... -<points> points."]],
+    [[:action, "smacks <nick>."], [:send, "You think you can come in here, and talk like that? -<points> points."]],
+    [[:action, "smacks <nick>."], [:send, "You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."]]
   ]
 
 
@@ -75,7 +75,7 @@ class Karma
         m.reply "#{m.user.nick} loses 50 for patting himself on the back." 
       else
         add_points(nick, 10)
-        m.reply witty_reply_for "props", :to => nick, :points => 10
+        witty_reply_for m.target, "props", :to => nick, :points => 10
       end
     end
   end
@@ -90,7 +90,7 @@ class Karma
   def smack(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
-      m.target.action witty_reply_for "smack", :to => nick, :points => 10
+      witty_reply_for m.target, "smack", :to => nick, :points => 10
     end
   end
 
@@ -112,9 +112,12 @@ class Karma
   end
 
   # ****************************
-  def witty_reply_for(type, options = {})
+  def witty_reply_for(target, type, options = {})
     phrases = Karma.const_get("#{type.upcase}_PHRASES")
-    phrases[rand(phrases.length)].gsub("<nick>", options[:to]).gsub("<points>", options[:points])
+    phrases = phrases[rand(phrases.length)]
+    phrases.each do |phrase|
+      target.send(phrase[0], phrase[1].gsub("<nick>", options[:to]).gsub("<points>", options[:points]))
+    end
   end
 
   def record_for(nick)
