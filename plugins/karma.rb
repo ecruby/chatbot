@@ -13,10 +13,10 @@ class Karma
   ]
 
   SMACK_PHRASES = [
-    "/me smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
-    "/me smacks <nick>...  tsk tsk tsk... -<points> points.",
-    "/me smacks <nick>. You think you can come in here, and talk like that? -<points> points.",
-    "/me smacks <nick>. You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."
+    "smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
+    "smacks <nick>...  tsk tsk tsk... -<points> points.",
+    "smacks <nick>. You think you can come in here, and talk like that? -<points> points.",
+    "smacks <nick>. You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."
   ]
 
 
@@ -90,7 +90,7 @@ class Karma
   def smack(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
-      m.reply witty_reply_for "smack", :to => nick, :points => 10
+      m.target.action witty_reply_for "smack", :to => nick, :points => 10
     end
   end
 
