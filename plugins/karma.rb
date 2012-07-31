@@ -116,7 +116,7 @@ class Karma
     phrases = Karma.const_get("#{type.upcase}_PHRASES")
     phrases = phrases[rand(phrases.length)]
     phrases.each do |phrase|
-      target.send(phrase[0], phrase[1].gsub("<nick>", options[:to]).gsub("<points>", options[:points]))
+      target.__send__(phrase[0], phrase[1].gsub("<nick>", options[:to]).gsub("<points>", options[:points].to_s))
     end
   end
 
