@@ -11,6 +11,12 @@ It runs with straight Ruby. You'll need the Cinch and Cinch-Identify gems and Ru
     nick: my_bot
     channel: ecruby
     nickserv_pass: sekrit
+    plugins:
+      - "karma"
+      - "repeater"
+      - "link_catcher"
+    cinch_plugins:
+      - "Cinch::Plugins::Identify"
 
 If you plan to use the Karma plugin, you'll need a bit more:
 
@@ -22,6 +28,12 @@ If you plan to use the Karma plugin, you'll need a bit more:
     persistence_url: ecruby.org
     username: some_user
     password: sekrit
+    plugins:
+      - "karma"
+      - "repeater"
+      - "link_catcher"
+    cinch_plugins:
+      - "Cinch::Plugins::Identify"
 
 Then just run it with
 

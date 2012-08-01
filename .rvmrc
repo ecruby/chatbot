@@ -1,0 +1,5 @@
+rvm --create ruby-1.9.2-p290@ecruby_chatbot
+# Ensure that Bundler is installed, install it if it is not.
+if ! command -v bundle > /dev/null; then
+  gem install bundler
+fi
