@@ -25,9 +25,9 @@ end
 
 $help_messages = []
 
-require './plugins/karma'
-require './plugins/link_catcher'
-require './plugins/repeater'
+$settings["settings"]["plugins"].each do |plugin|
+  require "./plugins/#{plugin}"
+end
 
 @irc  = Cinch::Bot.new do
   
@@ -35,7 +35,8 @@ require './plugins/repeater'
     c.server = "irc.freenode.org"
     c.nick = $settings["settings"]["nick"]
     c.channels = [$settings["settings"]["channel"]]
-    c.plugins.plugins = $settings["settings"]["plugins"].collect {|plugin| constantize(plugin)}
+    c.plugins.plugins = $settings["settings"]["cinch_plugins"] +
+                        $settings["settings"]["plugins"].map {|plugin| constantize(plugin.split("_").map {|word| word.capitalize}.join(""))}
     c.plugins.options[Cinch::Plugins::Identify] = {
       :username => $settings['settings']['nick'],
       :password => $settings['settings']['nickserv_pass'],
