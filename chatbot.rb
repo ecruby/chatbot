@@ -35,8 +35,8 @@ end
     c.server = "irc.freenode.org"
     c.nick = $settings["settings"]["nick"]
     c.channels = [$settings["settings"]["channel"]]
-    c.plugins.plugins = $settings["settings"]["cinch_plugins"] +
-                        $settings["settings"]["plugins"].map {|plugin| constantize(plugin.split("_").map {|word| word.capitalize}.join(""))}
+    c.plugins.plugins = $settings["settings"]["cinch_plugins"]||[] +
+                        $settings["settings"]["plugins"].map {|plugin| constantize(plugin.split("_").map {|word| word.capitalize}.join(""))}||[]
     c.plugins.options[Cinch::Plugins::Identify] = {
       :username => $settings['settings']['nick'],
       :password => $settings['settings']['nickserv_pass'],
@@ -50,4 +50,5 @@ end
 
 end
 
+Process.daemon(true)
 @irc.start

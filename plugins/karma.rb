@@ -7,16 +7,16 @@ class Karma
   include Cinch::Plugin
 
   PROPS_PHRASES = [
-    [[:send, "<nick> is apprently awesome.  +<points> points."]],
-    [[:send, "<nick> earns <points> for Gryffindor!"]],
-    [[:send, "YAZOO BITCHES!  <nick> earns 10 points!"]]
+    "<nick> is apprently awesome.  +<points> points.",
+    "<nick> earns <points> for Gryffindor!",
+    "YAZOO BITCHES!  <nick> earns 10 points!"
   ]
 
   SMACK_PHRASES = [
-    [[:action, "smacks <nick>..."], [:send, "you were like a brother to me.... now look at you... -<points> points."]],
-    [[:action, "smacks <nick>..."], [:send, "tsk tsk tsk... -<points> points."]],
-    [[:action, "smacks <nick>."], [:send, "You think you can come in here, and talk like that? -<points> points."]],
-    [[:action, "smacks <nick>."], [:send, "You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."]]
+    "/me smacks <nick>...  you were like a brother to me.... now look at you... -<points> points.",
+    "/me smacks <nick>...  tsk tsk tsk... -<points> points.",
+    "/me smacks <nick>. You think you can come in here, and talk like that? -<points> points.",
+    "/me smacks <nick>. You dare disrespect me, on this, the day of my daughter's wedding? -<points> points."
   ]
 
 
@@ -75,7 +75,7 @@ class Karma
         m.reply "#{m.user.nick} loses 50 for patting himself on the back." 
       else
         add_points(nick, 10)
-        witty_reply_for m.target, "props", :to => nick, :points => 10
+        m.reply witty_reply_for "props", :to => nick, :points => 10
       end
     end
   end
@@ -90,7 +90,7 @@ class Karma
   def smack(m, nick)
     if valid_message(m, nick)
       reduce_points(nick, 10)
-      witty_reply_for m.target, "smack", :to => nick, :points => 10
+      m.reply witty_reply_for "smack", :to => nick, :points => 10
     end
   end
 
@@ -106,18 +106,15 @@ class Karma
   end
 
   def scoreboard(m)
-    @karma_points.each do |j|
+    @karma_points.sort_by{|x|x['points']}.reverse.each do |j|
       m.reply points_for(j['nick'])
     end
   end
 
   # ****************************
-  def witty_reply_for(target, type, options = {})
+  def witty_reply_for(type, options = {})
     phrases = Karma.const_get("#{type.upcase}_PHRASES")
-    phrases = phrases[rand(phrases.length)]
-    phrases.each do |phrase|
-      target.__send__(phrase[0], phrase[1].gsub("<nick>", options[:to]).gsub("<points>", options[:points].to_s))
-    end
+    phrases[rand(phrases.length)].gsub("<nick>", options[:to]).gsub("<points>", options[:points])
   end
 
   def record_for(nick)
@@ -140,7 +137,11 @@ class Karma
   end
 
   def points_for(nick)
-    "#{nick} has #{record_for(nick)['points']} points"
+    if nick == 'aarongodin'
+      "aarongodin has completely missed the point"
+    else
+      "#{nick} has #{record_for(nick)['points']} points"
+    end
   end
   
 end
